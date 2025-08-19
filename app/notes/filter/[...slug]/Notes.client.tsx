@@ -5,8 +5,8 @@ import css from "./Notes.module.css";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import Pagination from "@/components/Pagination/Pagination";
 import NoteList from "@/components/NoteList/NoteList";
-import NoteModal from "@/components/Modal/Modal";
-import NoteForm from "@/components/NoteForm/NoteForm";
+
+import Link from "next/link";
 
 import { useState } from "react";
 import { useDebounce } from "use-debounce";
@@ -23,7 +23,6 @@ type Props = {
 export default function NotesClient({ initialData, initialTag }: Props) {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   // const [tag, setTag] = useState<string | undefined>(initialTag);
 
   const [debounceSearchQuery] = useDebounce(searchQuery, 300);
@@ -56,9 +55,9 @@ export default function NotesClient({ initialData, initialTag }: Props) {
     setSearchQuery(newQuery);
   };
 
-  const toogleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
+  // const toogleModal = () => {
+  //   setIsModalOpen(!isModalOpen);
+  // };
 
   return (
     <div className={css.app}>
@@ -72,21 +71,11 @@ export default function NotesClient({ initialData, initialTag }: Props) {
             onPageChange={setCurrentPage}
           />
         )}
-        <button
-          className={css.button}
-          onClick={() => {
-            toogleModal();
-          }}
-        >
-          Create Note +
-        </button>
-      </header>
 
-      {isModalOpen && (
-        <NoteModal onClose={toogleModal}>
-          <NoteForm onClose={toogleModal} />
-        </NoteModal>
-      )}
+        <Link className={css.button} href="/notes/action/create">
+          Create Note +
+        </Link>
+      </header>
 
       {isLoading && <p>Loading notes...</p>}
       {isError && <p>Error loading notes: {(error as Error).message}</p>}
