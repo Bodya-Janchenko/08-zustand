@@ -13,38 +13,21 @@ import { useDebounce } from "use-debounce";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { fetchNotes } from "@/lib/api";
 import { Toaster } from "react-hot-toast";
-import type { FetchNotesResponse } from "@/lib/api";
 
 type Props = {
-  initialData: FetchNotesResponse;
-  initialTag?: string;
+  tag?: string;
 };
 
-export default function NotesClient({ initialData, initialTag }: Props) {
+export default function NotesClient({ tag }: Props) {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  // const [tag, setTag] = useState<string | undefined>(initialTag);
 
   const [debounceSearchQuery] = useDebounce(searchQuery, 300);
 
-  // const { data, isLoading, isError, error } = useQuery({
-  //   queryKey: ["notes", debounceSearchQuery, currentPage],
-  //   queryFn: () => fetchNotes(debounceSearchQuery, currentPage),
-  //   placeholderData: keepPreviousData,
-  //   initialData:
-  //     currentPage === 1 && debounceSearchQuery === "" ? initialData : undefined,
-  // });
-
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["notes", debounceSearchQuery, currentPage, initialTag],
-    queryFn: () => fetchNotes(debounceSearchQuery, currentPage, initialTag),
+    queryKey: ["notes", debounceSearchQuery, currentPage, tag],
+    queryFn: () => fetchNotes(debounceSearchQuery, currentPage, tag),
     placeholderData: keepPreviousData,
-    initialData:
-      currentPage === 1 &&
-      debounceSearchQuery === "" &&
-      initialTag === undefined
-        ? initialData
-        : undefined,
   });
 
   const notes = data?.notes ?? [];
@@ -54,10 +37,6 @@ export default function NotesClient({ initialData, initialTag }: Props) {
     setCurrentPage(1);
     setSearchQuery(newQuery);
   };
-
-  // const toogleModal = () => {
-  //   setIsModalOpen(!isModalOpen);
-  // };
 
   return (
     <div className={css.app}>

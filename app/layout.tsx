@@ -10,6 +10,19 @@ import React from "react";
 export const metadata: Metadata = {
   title: "NoteHub",
   description: "Created by GoIT",
+  openGraph: {
+    title: "NoteHub",
+    description: "Created by GoIT",
+    url: "https://notehub.com",
+    images: [
+      {
+        url: "/notehub-og-meta.jpg",
+        width: 1200,
+        height: 630,
+        alt: "NoteHub Preview",
+      },
+    ],
+  },
 };
 
 const roboto = Roboto({

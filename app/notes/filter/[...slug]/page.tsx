@@ -1,6 +1,7 @@
 import { fetchNotes } from "@/lib/api";
 import NotesClient from "./Notes.client";
 import { Note } from "@/types/note";
+import { Metadata } from "next";
 
 type Props = {
   params: Promise<{ slug: string[] }>;
@@ -11,7 +12,7 @@ const formatTag = (tag?: string) => {
   return tag.charAt(0).toUpperCase() + tag.slice(1).toLowerCase();
 };
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const category = formatTag(slug?.[0]);
 
@@ -44,8 +45,7 @@ const NotesByCategory = async ({ params }: Props) => {
   const { slug } = await params;
   const category = formatTag(slug?.[0]);
 
-  const initialData = await fetchNotes("", 1, category);
-  return <NotesClient initialData={initialData} initialTag={category} />;
+  return <NotesClient tag={category} />;
 };
 
 export default NotesByCategory;
