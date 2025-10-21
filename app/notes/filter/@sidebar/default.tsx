@@ -12,20 +12,23 @@ export const categories: NoteTag[] = [
 
 const SidebarNotes = () => {
   return (
-    <ul className={css.menuList}>
-      <li className={css.menuItem}>
-        <Link className={css.menuLink} href="/notes/filter/all">
-          All notes
-        </Link>
-      </li>
-      {categories.map((category, index) => (
-        <li className={css.menuItem} key={index}>
-          <Link href={`/notes/filter/${category}`} className={css.menuLink}>
-            {category}
+    <>
+      <Link href="/notes/action/create">Create note +</Link>
+      <ul className={css.menuList}>
+        <li className={css.menuItem}>
+          <Link className={css.menuLink} href="/notes/filter/all">
+            All notes
           </Link>
         </li>
-      ))}
-    </ul>
+        {categories.map((category, index) => (
+          <li className={css.menuItem} key={index}>
+            <Link href={`/notes/filter/${category}`} className={css.menuLink}>
+              {category}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </>
   );
 };
 

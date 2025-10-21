@@ -6,6 +6,7 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import NotesClient from "./Notes.client";
+import { Metadata } from "next";
 
 type Category = NoteTag | "All";
 
@@ -18,6 +19,37 @@ const formatTag = (category?: Category): NoteTag | undefined => {
   return (category.charAt(0).toUpperCase() +
     category.slice(1).toLowerCase()) as NoteTag;
 };
+
+export async function generateMetadata({
+  params,
+}: NotesByCategoryProps): Promise<Metadata> {
+  const { slug } = await params;
+  const category = formatTag(slug?.[0]) ?? "All";
+  return {
+    title: `Notes categoty: ${category}`,
+    description: `Filtering notes for a category: ${category}`,
+    openGraph: {
+      title: `Notes categoty: ${category}`,
+      description: `Filtering notes for a category: ${category}`,
+      url: `https://notehub.com/notes/filter/${category}`,
+      images: [
+        {
+          url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+          width: 1200,
+          height: 630,
+          alt: "Just logo NoteHub",
+        },
+      ],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `Notes categoty: ${category}`,
+      description: `Filtering notes for a category: ${category}`,
+      images: ["https://ac.goit.global/fullstack/react/og-meta.jpg"],
+    },
+  };
+}
 
 const NotesByCategory = async ({ params }: NotesByCategoryProps) => {
   const { slug } = await params;
